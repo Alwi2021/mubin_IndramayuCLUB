@@ -1,13 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indramayu CLUB</title>
+    <style>
+        /* Add styles for the scrollable interface and text ticker */
+        body { margin: 0; font-family: Arial, sans-serif; }
+        #ticker { background-color: yellow; padding: 10px; white-space: nowrap; overflow: hidden; }
+        #ticker span { display: inline-block; animation: ticker 20s linear infinite; }
+        @keyframes ticker { 
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .scrollable { max-height: 400px; overflow-y: scroll; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div id="ticker">
+        <span>Your prayer time and rest schedule information goes here.</span>
+    </div>
+    <div class="scrollable">
+        <h2>Login System</h2>
+        <form id="loginForm">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <h2>Game Features</h2>
+        <p>Details about the game features.</p>
+        <h2>Q&A Forum</h2>
+        <p>Question and Answer forum details here.</p>
+    </div>
+    <!-- Hidden Credentials Section for Implementation -->
+    <div style="display:none;">
+        <p>Hidden credentials and API keys can be stored securely here.</p>
+    </div>
+    <script>
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            alert('Login functionality to be implemented.');
+        };
+    </script>
+</body>
 </html>
-
