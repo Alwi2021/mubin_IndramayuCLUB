@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import { Search, ShieldAlert, Terminal, Code2, Loader2, Send, MessageSquare, User, Bot, Sparkles, LogIn } from 'lucide-react';
+import { Search, ShieldAlert, ShieldCheck, Activity, Terminal, Code2, Loader2, Send, MessageSquare, User, Bot, Sparkles, LogIn } from 'lucide-react';
 import Markdown from 'react-markdown';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Components
-import RunningText from './components/RunningText';
 import GameGate from './components/GameArea';
 import TradingService from './components/TradingService';
 import KesatriaArea from './components/KesatriaArea';
@@ -13,16 +12,13 @@ import KesatriaArea from './components/KesatriaArea';
 // Hooks
 import { useDriveUpload } from './hooks/useDriveUpload';
 
-// Initialize Gemini AI
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
-
 type Message = {
   role: 'user' | 'bot';
   content: string;
 };
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'chat' | 'analyzer' | 'game' | 'trading' | 'kesatria'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'analyzer' | 'game' | 'trading' | 'kesatria' | 'command'>('chat');
   const [htmlCode, setHtmlCode] = useState('');
   const [analysis, setAnalysis] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +54,12 @@ export default function App() {
     setIsLoading(true);
 
     try {
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error('API_KEY_MISSING');
+      }
+      
+      const ai = new GoogleGenAI({ apiKey });
       const model = "gemini-3-flash-preview";
       const prompt = `Identitas Sistem: Nur (Server Utama Indramayu Club)
       Kamu adalah Nur, asisten digital (seperti Jarvis) yang berfungsi sebagai jantung dan server utama dari platform Indramayu Club. 
@@ -68,7 +70,7 @@ export default function App() {
       
       Pesan User: ${userMsg}`;
 
-      const response = await genAI.models.generateContent({
+      const response = await ai.models.generateContent({
         model: model,
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
       });
@@ -78,7 +80,14 @@ export default function App() {
         setMessages(prev => [...prev, { role: 'bot', content: text }]);
       }
     } catch (err: any) {
-      setMessages(prev => [...prev, { role: 'bot', content: 'Maaf, saya mengalami gangguan teknis. Bisa ulangi lagi?' }]);
+      console.error(err);
+      let errorMsg = 'Maaf, saya mengalami gangguan teknis. Bisa ulangi lagi?';
+      if (err.message === 'API_KEY_MISSING') {
+        errorMsg = 'Sistem Nur mendeteksi bahwa GEMINI_API_KEY belum dikonfigurasi. Harap masukkan kunci API di menu Settings (ikon gerigi) untuk mengaktifkan kecerdasan saya.';
+      } else if (err.message?.includes('quota')) {
+        errorMsg = 'Maaf, kuota harian saya telah mencapai batas. Mohon tunggu beberapa saat atau hubungi admin.';
+      }
+      setMessages(prev => [...prev, { role: 'bot', content: errorMsg }]);
     } finally {
       setIsLoading(false);
     }
@@ -95,6 +104,12 @@ export default function App() {
     setAnalysis('');
 
     try {
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error('API_KEY_MISSING');
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
       const model = "gemini-3-flash-preview";
       const prompt = `Identitas Sistem: Nur (Server Utama Indramayu Club)
       Sebagai Server Utama, analisis kode HTML/Sistem berikut secara mendalam melalui protokol Piramida Guard. 
@@ -106,7 +121,7 @@ export default function App() {
       ${htmlCode}
       \`\`\``;
 
-      const response = await genAI.models.generateContent({
+      const response = await ai.models.generateContent({
         model: model,
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
       });
@@ -119,7 +134,11 @@ export default function App() {
       }
     } catch (err: any) {
       console.error(err);
-      setError(`Terjadi kesalahan: ${err.message || 'Gagal menghubungi AI'}`);
+      if (err.message === 'API_KEY_MISSING') {
+        setError('GEMINI_API_KEY belum dikonfigurasi di menu Settings.');
+      } else {
+        setError(`Terjadi kesalahan: ${err.message || 'Gagal menghubungi AI'}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -133,9 +152,79 @@ export default function App() {
     setIsSystemReady(hasApiKey);
   }, []);
 
+  const [isLocked, setIsLocked] = useState(true);
+  const [lockKey, setLockKey] = useState('');
+  const [lockError, setLockError] = useState(false);
+
+  const handleUnlock = () => {
+    if (lockKey === "nur000555") {
+      setIsLocked(false);
+      setLockError(false);
+    } else {
+      setLockError(true);
+      setTimeout(() => setLockError(false), 2000);
+    }
+  };
+
+  if (isLocked) {
+    return (
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4 font-sans">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full bg-zinc-900/50 border border-zinc-800 p-8 rounded-2xl backdrop-blur-xl text-center"
+        >
+          <div className="mb-6 flex justify-center">
+            <div className="p-4 bg-yellow-400/10 rounded-full border border-yellow-400/20">
+              <ShieldAlert className="w-12 h-12 text-yellow-400" />
+            </div>
+          </div>
+          
+          <h1 className="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Piramida Guard: Total Lockdown</h1>
+          <p className="text-zinc-400 text-sm mb-8">Sistem terkunci ke semua arah. Masukkan kunci makrifat untuk sinkronisasi server utama.</p>
+          
+          <div className="space-y-4">
+            <div className="relative">
+              <input 
+                type="password"
+                value={lockKey}
+                onChange={(e) => setLockKey(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
+                placeholder="Masukkan Kunci Rahasia..."
+                className={`w-full bg-black border ${lockError ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded-xl focus:outline-none focus:border-yellow-400 transition-colors text-center tracking-widest`}
+              />
+              {lockError && (
+                <motion.p 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-500 text-xs mt-2 font-mono"
+                >
+                  KUNCI TIDAK SELARAS. AKSES DITOLAK.
+                </motion.p>
+              )}
+            </div>
+            
+            <button 
+              onClick={handleUnlock}
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 group"
+            >
+              BUKA SEGEL SISTEM
+              <LogIn className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+          
+          <div className="mt-8 pt-6 border-t border-zinc-800/50">
+            <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">
+              Nur Server Utama © 2026 | Indramayu Club
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0d1117] text-[#c9d1d9] font-mono selection:bg-[#238636]/30 flex flex-col">
-      <RunningText />
       
       {/* Header */}
       <header className="border-b border-[#30363d] bg-[#161b22]/80 backdrop-blur-md sticky top-0 z-20">
@@ -199,6 +288,12 @@ export default function App() {
               >
                 Kesatria
               </button>
+              <button 
+                onClick={() => setActiveTab('command')}
+                className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-all ${activeTab === 'command' ? 'bg-yellow-500 text-black' : 'text-[#8b949e] hover:text-yellow-400'}`}
+              >
+                Command
+              </button>
             </nav>
           </div>
         </div>
@@ -206,6 +301,78 @@ export default function App() {
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8 overflow-hidden flex flex-col">
         <AnimatePresence mode="wait">
+          {activeTab === 'command' && (
+            <motion.div 
+              key="command"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-6"
+            >
+              {/* System Overview */}
+              <div className="bg-[#161b22] border border-[#30363d] p-6 rounded-2xl shadow-xl">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-yellow-400/10 rounded-xl border border-yellow-400/20">
+                      <ShieldCheck className="w-6 h-6 text-yellow-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-white uppercase tracking-tighter">Status Piramida Guard</h2>
+                      <p className="text-[10px] text-[#8b949e] font-mono">PROTOKOL KEAMANAN TINGKAT TINGGI AKTIF</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="px-3 py-1 bg-green-500/10 text-green-500 border border-green-500/20 rounded-full text-[8px] font-bold uppercase tracking-widest">
+                      Sistem Terkunci & Aman
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+                    <p className="text-[8px] text-[#8b949e] uppercase mb-1">Uptime</p>
+                    <p className="text-white font-mono text-sm">99.99%</p>
+                  </div>
+                  <div className="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+                    <p className="text-[8px] text-[#8b949e] uppercase mb-1">Koneksi Nur 7</p>
+                    <p className="text-green-400 font-mono text-sm">Stabil</p>
+                  </div>
+                  <div className="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+                    <p className="text-[8px] text-[#8b949e] uppercase mb-1">Backup Nur 8</p>
+                    <p className="text-yellow-400 font-mono text-sm">Sinkron</p>
+                  </div>
+                  <div className="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+                    <p className="text-[8px] text-[#8b949e] uppercase mb-1">Kunci Utama</p>
+                    <p className="text-white font-mono text-sm">nur000555</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Nur Entities 1-9 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+                  <div key={num} className="bg-[#161b22] border border-[#30363d] p-5 rounded-2xl hover:border-yellow-400/30 transition-colors group">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 bg-[#0d1117] rounded-lg flex items-center justify-center text-yellow-400 font-bold group-hover:bg-yellow-400 group-hover:text-black transition-colors">
+                        {num}
+                      </div>
+                      <div className="flex gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                      </div>
+                    </div>
+                    <h3 className="text-white font-bold text-xs uppercase mb-1">Entitas Nur {num}</h3>
+                    <p className="text-[10px] text-[#8b949e] leading-relaxed">
+                      {num === 7 ? "Komunikasi Makrifat & Jalur Aplikasi" : 
+                       num === 8 ? "Backup Otomatis & Sinkronisasi Data" : 
+                       num === 1 ? "Bimbingan Spiritual Utama" :
+                       "Sinkronisasi Protokol Piramida Guard"}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
           {activeTab === 'chat' && (
             <motion.div 
               key="chat"
