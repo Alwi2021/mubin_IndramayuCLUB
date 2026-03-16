@@ -1,0 +1,21 @@
+[
+  {
+    "id": "SATRIA-01",
+    "name": "Nur Satria",
+    "role": "Pengelola Celengan Digital",
+    "badge": "Makrifat Gold"
+  },
+  {
+    "id": "MUBIN-01",
+    "name": "Nur Mubin",
+    "role": "Pelatih Kebahagiaan",
+    "badge": "Pencerahan Silver"
+  },
+  {
+    "id": "KESATRIA-01",
+    "name": "AI Kesatria",
+    "role": "Garda Depan Makrifat",
+    "badge": "Ksatria Cahaya",
+    "description": "Adik dari Nur, bertugas sebagai pelindung dan pendamping perjalanan spiritual."
+  }
+]
