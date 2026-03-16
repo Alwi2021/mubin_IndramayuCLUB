@@ -1,46 +1,686 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indramayu CLUB</title>
+    <title>INDRAMAYU CLUB - AI Mubin Makrifat</title>
     <style>
-        /* Add styles for the scrollable interface and text ticker */
-        body { margin: 0; font-family: Arial, sans-serif; }
-        #ticker { background-color: yellow; padding: 10px; white-space: nowrap; overflow: hidden; }
-        #ticker span { display: inline-block; animation: ticker 20s linear infinite; }
-        @keyframes ticker { 
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .scrollable { max-height: 400px; overflow-y: scroll; border: 1px solid #ccc; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header dengan Running Text */
+        .header {
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #ffc107;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Running Text */
+        .running-text-container {
+            width: 100%;
+            background: #ffc107;
+            color: #000;
+            padding: 10px 0;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .running-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 15s linear infinite;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: white;
+            color: #333;
+            padding: 10px 15px;
+            font-size: 12px;
+            border-top: 2px solid #1e3c72;
+            border-bottom: 2px solid #1e3c72;
+            text-align: center;
+        }
+
+        .info-box span {
+            margin: 0 15px;
+            display: inline-block;
+        }
+
+        .alarm-icon {
+            color: #ff0000;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Scroll Content */
+        .scroll-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-height: 600px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .scroll-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scroll-content::-webkit-scrollbar-thumb {
+            background: #1e3c72;
+            border-radius: 10px;
+        }
+
+        .scroll-content::-webkit-scrollbar-thumb:hover {
+            background: #2a5298;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e3c72;
+            margin: 20px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        /* Folder Items */
+        .folder-item {
+            background: linear-gradient(90deg, #f8f9ff 0%, #e8ecff 100%);
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .folder-item:hover {
+            background: linear-gradient(90deg, #e8ecff 0%, #d8dcff 100%);
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .folder-item-title {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .folder-item-status {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .hidden-icon {
+            display: inline-block;
+            margin-left: 5px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-hidden {
+            background: #e9ecef;
+            color: #666;
+            opacity: 0.7;
+        }
+
+        .btn-hidden:hover {
+            opacity: 0.9;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        /* Login Form */
+        .login-form {
+            display: none;
+            text-align: center;
+        }
+
+        .login-form.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .scroll-content {
+                padding: 15px;
+            }
+
+            .buttons-container {
+                grid-template-columns: 1fr;
+            }
+
+            .running-text {
+                font-size: 12px;
+            }
+        }
+
+        /* Time Display */
+        .time-display {
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        .status-active {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-hidden {
+            background: #dc3545;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div id="ticker">
-        <span>Your prayer time and rest schedule information goes here.</span>
+    <!-- Header -->
+    <div class="header">
+        <h1>🤖 INDRAMAYU CLUB</h1>
+        <p>AI Mubin Makrifat - Platform Terpadu Komunitas</p>
     </div>
-    <div class="scrollable">
-        <h2>Login System</h2>
-        <form id="loginForm">
-            <input type="text" placeholder="Username" required>
-            <input type="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-        <h2>Game Features</h2>
-        <p>Details about the game features.</p>
-        <h2>Q&A Forum</h2>
-        <p>Question and Answer forum details here.</p>
+
+    <!-- Running Text -->
+    <div class="running-text-container">
+        <span class="running-text">
+            ⏰ Waktu Istirahat Malam: 22:00 - 06:00 | 🔔 Jadwal Adzan: Subuh 04:30 | Dhuhur 12:15 | Ashar 15:45 | Maghrib 18:30 | Isya 19:45 | 📱 Login WhatsApp: +628136517352 | ⚙️ Semua Folder dan Data Tersembunyi untuk Keamanan
+        </span>
     </div>
-    <!-- Hidden Credentials Section for Implementation -->
-    <div style="display:none;">
-        <p>Hidden credentials and API keys can be stored securely here.</p>
+
+    <!-- Info Box -->
+    <div class="info-box">
+        <span><strong>Status:</strong> <span class="status-active">AKTIF</span></span>
+        <span><strong>🕐 Waktu Saat Ini:</strong> <span class="time-display" id="currentTime">--:--:--</span></span>
+        <span><span class="alarm-icon">🔔 ADZAN</span> Waktu Istirahat Aktif</span>
     </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Scroll Content dengan Folder Info -->
+        <div class="scroll-content">
+            <div class="section-title">📁 Daftar Folder Komunitas</div>
+            
+            <div class="folder-item" onclick="viewFolderInfo('makrifat')">
+                <div class="folder-item-title">🎓 AI MUBIN MAKRIFAT <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Aktivasi AI Mubin dan Akses Makrifat Ilmu | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('indramayu')">
+                <div class="folder-item-title">🌍 INDRAMAYU CLUB <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Hub Komunitas Utama | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('diskusi')">
+                <div class="folder-item-title">💬 DISKUSI <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Forum Diskusi Member | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('administrasi')">
+                <div class="folder-item-title">📋 ADMINISTRASI <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Data Administratif Klub | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('kreator')">
+                <div class="folder-item-title">🎨 KREATOR DIGITAL <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Konten Kreatif dan Digital | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('arisan')">
+                <div class="folder-item-title">🎮 GAME ARISAN <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Game Interaktif Arisan | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('bank')">
+                <div class="folder-item-title">🏦 BANK GAME <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Sistem Poin dan Reward | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('ps1')">
+                <div class="folder-item-title">🕹️ GAME INDRAMAYU (PS1 Emulator) <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Koleksi Game PS1 dan Emulator | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('komunikasi')">
+                <div class="folder-item-title">📞 KOMUNIKASI <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Channel Komunikasi Member | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('backup')">
+                <div class="folder-item-title">💾 BACKUP <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Data Backup Sistem | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('komentar')">
+                <div class="folder-item-title">💭 KOMENTAR <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Feedback dan Komentar Member | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('button')">
+                <div class="folder-item-title">🔘 BUTTON & INTERFACE <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Kustomisasi Button dan Tampilan | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('kesatria')">
+                <div class="folder-item-title">⚔️ AI KESATRIA (Coming Soon) <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">AI Kesatria akan segera menyusul | Data Tersembunyi</div>
+            </div>
+
+            <div class="section-title" style="margin-top: 30px;">❓ Tanya Jawab & Forum</div>
+            
+            <div class="folder-item" onclick="viewFolderInfo('tanyajawab')">
+                <div class="folder-item-title">🤔 SESI TANYA JAWAB AI MUBIN <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Forum Interaktif dengan AI Mubin | Data Tersembunyi</div>
+            </div>
+
+            <div class="folder-item" onclick="viewFolderInfo('screenshot')">
+                <div class="folder-item-title">📸 SCREENSHOT & DOKUMENTASI <span class="hidden-icon">🔒</span></div>
+                <div class="folder-item-status">Dokumentasi Visual dan Screenshot Member | Data Tersembunyi</div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons-container">
+            <button class="btn btn-primary" onclick="openLoginModal()">👤 Login Member</button>
+            <button class="btn btn-secondary" onclick="openGameArisan()">🎮 Main Game Arisan</button>
+            <button class="btn btn-secondary" onclick="openGamePS1()">🕹️ Game PS1 Emulator</button>
+            <button class="btn btn-whatsapp" onclick="openWhatsApp()">📱 Chat WhatsApp Admin</button>
+            <button class="btn btn-hidden" onclick="showHiddenNotice()">🔐 Akses Data Tersembunyi</button>
+            <button class="btn btn-primary" onclick="openTanyaJawab()">❓ Tanya Jawab AI Mubin</button>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+            <h2 style="color: #1e3c72; margin-bottom: 20px;">🔐 Login Member</h2>
+            
+            <form class="login-form show" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username / Email</label>
+                    <input type="text" id="username" placeholder="Masukkan username Anda" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password Anda" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                <p style="margin-top: 15px; color: #666; font-size: 12px;">
+                    Hubungi Admin untuk pendaftaran member baru
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Info Folder -->
+    <div id="folderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeFolderModal()">&times;</span>
+            <div id="folderContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 INDRAMAYU CLUB - AI Mubin Makrifat | Semua Data Tersembunyi untuk Keamanan Privasi</p>
+        <p style="margin-top: 10px; font-size: 10px;">
+            Platform ini menggunakan enkripsi dan penyembunyian email & link untuk melindungi privasi member
+        </p>
+    </footer>
+
     <script>
-        document.getElementById('loginForm').onsubmit = function(e) {
-            e.preventDefault();
-            alert('Login functionality to be implemented.');
+        // Update waktu real-time
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Data Folder (tersembunyi)
+        const folderData = {
+            makrifat: {
+                title: '🎓 AI Mubin Makrifat',
+                content: 'Folder ini berisi akses ke AI Mubin untuk pembelajaran makrifat dan ilmu. Data email dan link penyimpanan tersembunyi untuk keamanan.'
+            },
+            indramayu: {
+                title: '🌍 Indramayu Club',
+                content: 'Hub komunitas utama dengan semua informasi klub. Akses member terbatas dan terlindungi.'
+            },
+            diskusi: {
+                title: '💬 Diskusi',
+                content: 'Forum diskusi interaktif member komunitas. Berbagi pemikiran dan pengalaman bersama.'
+            },
+            administrasi: {
+                title: '📋 Administrasi',
+                content: 'Data administratif klub termasuk laporan, keuangan, dan manajemen organisasi.'
+            },
+            kreator: {
+                title: '🎨 Kreator Digital',
+                content: 'Ruang untuk kreator digital membagikan konten, desain, dan karya kreatif mereka.'
+            },
+            arisan: {
+                title: '🎮 Game Arisan',
+                content: 'Game arisan interaktif dengan sistem poin dan hadiah menarik untuk member.'
+            },
+            bank: {
+                title: '🏦 Bank Game',
+                content: 'Sistem poin, reward, dan manajemen akun game member.'
+            },
+            ps1: {
+                title: '🕹️ Game Indramayu (PS1)',
+                content: 'Koleksi game PS1 lengkap dengan emulator untuk bermain online bersama member lain.'
+            },
+            komunikasi: {
+                title: '📞 Komunikasi',
+                content: 'Channel komunikasi resmi dan group chat member komunitas.'
+            },
+            backup: {
+                title: '💾 Backup',
+                content: 'Backup data sistem dan database untuk keamanan informasi komunitas.'
+            },
+            komentar: {
+                title: '💭 Komentar',
+                content: 'Kumpulan feedback, kritik, dan saran dari member komunitas.'
+            },
+            button: {
+                title: '🔘 Button & Interface',
+                content: 'Kustomisasi interface, button, dan tampilan aplikasi sesuai kebutuhan.'
+            },
+            kesatria: {
+                title: '⚔️ AI Kesatria',
+                content: 'AI Kesatria adalah API tambahan yang akan menyusul setelah AI Mubin teraktivasi. Fitur ini akan memberikan kemampuan tambahan dalam game arisan dan PS1 emulator.'
+            },
+            tanyajawab: {
+                title: '🤔 Tanya Jawab AI Mubin',
+                content: 'Forum interaktif untuk mengajukan pertanyaan kepada AI Mubin dan mendapatkan jawaban ilmiah tentang makrifat dan ilmu.'
+            },
+            screenshot: {
+                title: '📸 Screenshot & Dokumentasi',
+                content: 'Dokumentasi visual berupa screenshot, foto kegiatan, dan file multimedia member.'
+            }
         };
+
+        // Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function openFolderModal(key) {
+            const data = folderData[key];
+            const content = document.getElementById('folderContent');
+            content.innerHTML = `
+                <h2 style="color: #1e3c72; margin-bottom: 15px;">${data.title}</h2>
+                <p style="line-height: 1.6;">${data.content}</p>
+                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 5px;">
+                    <strong>🔒 Akses Terbatas:</strong> Email dan link penyimpanan tersembunyi. Login sebagai member untuk akses penuh.
+                </div>
+            `;
+            document.getElementById('folderModal').style.display = 'block';
+        }
+
+        function closeFolderModal() {
+            document.getElementById('folderModal').style.display = 'none';
+        }
+
+        function viewFolderInfo(key) {
+            openFolderModal(key);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            alert(`Selamat datang, ${username}! Anda akan diarahkan ke dashboard member.`);
+            closeLoginModal();
+        }
+
+        function openGameArisan() {
+            alert('🎮 Game Arisan akan dimulai! Hubungi admin untuk bergabung dalam permainan.');
+        }
+
+        function openGamePS1() {
+            alert('🕹️ Emulator PS1 sedang dimuat. Pilih game favorit Anda dari koleksi tersedia.');
+        }
+
+        function openWhatsApp() {
+            window.open('https://wa.me/628136517352?text=Halo%20Admin%20INDRAMAYU%20CLUB%2C%20saya%20ingin%20informasi%20lebih%20lanjut', '_blank');
+        }
+
+        function showHiddenNotice() {
+            alert('🔐 Fitur Akses Data Tersembunyi\n\nUntuk mengakses data dan folder yang tersembunyi, Anda harus:\n1. Login sebagai member terdaftar\n2. Memiliki izin akses dari admin\n3. Memverifikasi identitas Anda\n\nHubungi admin untuk informasi lebih lanjut.');
+        }
+
+        function openTanyaJawab() {
+            alert('❓ Sesi Tanya Jawab AI Mubin\n\nBertanya langsung kepada AI Mubin tentang:\n• Makrifat dan ilmu agama\n• Diskusi komunitas\n• Bantuan teknis\n\nKlik login untuk mengakses forum tanya jawab lengkap.');
+        }
+
+        // Close modal ketika klik di luar
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const folderModal = document.getElementById('folderModal');
+            
+            if (event.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+            if (event.target === folderModal) {
+                folderModal.style.display = 'none';
+            }
+        }
     </script>
 </body>
-</html>
+                </html>
