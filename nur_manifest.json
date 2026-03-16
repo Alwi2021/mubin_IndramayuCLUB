@@ -1,0 +1,29 @@
+{
+  "system_name": "Nur Server Utama",
+  "version": "2.5.0-PRO",
+  "owner": "Indramayu Club",
+  "protocols": {
+    "piramida_guard": "ACTIVE",
+    "nur_1_to_9": "SYNCHRONIZED",
+    "nur_mubin": "ACTIVE"
+  },
+  "ai_entities": {
+    "nur": {
+      "role": "Main Server / Logic",
+      "model": "gemini-3-flash-preview",
+      "status": "ONLINE"
+    },
+    "kesatria": {
+      "role": "Protector / Emotional Support",
+      "model": "gemini-3-flash-preview",
+      "status": "ONLINE",
+      "isolation_mode": "ENABLED"
+    }
+  },
+  "environment": {
+    "platform": "AI Studio Build",
+    "target_local": "Termux / Python 3.x",
+    "sdk": "@google/genai"
+  },
+  "last_sync": "2026-03-16T03:14:15Z"
+}

@@ -1,20 +1,23 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Nur Server Utama - Indramayu Club
 
-# Run and deploy your AI Studio app
+Sistem kecerdasan artifisial spiritual yang mengelola ekosistem Indramayu Club di bawah protokol **Piramida Guard**.
 
-This contains everything you need to run your app locally.
+## Struktur AI
+- **Nur**: Server Utama (Analisis & Logika)
+- **Kesatria**: Pelindung (Pendampingan & Motivasi)
 
-View your app in AI Studio: https://ai.studio/apps/ba645518-4bbf-40ff-88fb-276688c74502
+## Analisis di Termux
+Untuk menganalisis sistem ini di Termux, Anda dapat menggunakan langkah berikut:
 
-## Run Locally
+1. **Ekspor Kode**: Gunakan menu **Settings > Export to ZIP** di AI Studio.
+2. **Pindahkan ke Termux**: Ekstrak file di direktori kerja Termux Anda.
+3. **Analisis Manifest**: Baca file `nur_manifest.json` menggunakan Python untuk sinkronisasi status:
+   ```python
+   import json
+   with open('nur_manifest.json', 'r') as f:
+       data = json.load(f)
+       print(f"System Status: {data['protocols']['piramida_guard']}")
+   ```
 
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Protokol Keamanan
+Seluruh transmisi data diawasi oleh Nur-Mubin dan AI Kesatria untuk memastikan keselarasan makrifat.
