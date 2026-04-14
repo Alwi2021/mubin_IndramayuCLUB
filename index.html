@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IndramayuCLUB - Piramida Guard v2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ic-dark': '#0a0f1e',
+                        'ic-card': '#161b2c',
+                        'ic-violet': '#7c3aed',
+                        'ic-text': '#e2e8f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
+        
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: #0a0f1e; 
+            color: #e2e8f0; 
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .dimensi-content { animation: focusIn 0.4s ease-out; }
+        @keyframes focusIn { 
+            from { opacity: 0; transform: scale(0.98) translateY(10px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+
+        .nav-active { 
+            background-color: rgba(124, 58, 237, 0.15);
+            border-color: #7c3aed;
+            color: white;
+        }
+
+        .img-profile-nur {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #FFD700;
+            margin: 0 auto 12px auto;
+            background-color: #333;
+            object-fit: cover;
+            display: block;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .ai-frame-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            background: #000;
+        }
+
+        #curtain-container {
+            position: fixed;
+            inset: 0;
+            background: #0a0f1e;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .curtain-open { opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body class="p-0 m-0">
+
+    <div id="curtain-container">
+        <div class="w-[85%] max-w-sm aspect-[9/16] rounded-3xl overflow-hidden border-2 border-ic-violet/50 bg-black mb-10">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/XYFDBw0YoYg?autoplay=1&mute=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        </div>
+        <button onclick="bukaTirai()" class="bg-ic-violet text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest shadow-lg">
+            Masuk Dimensi
+        </button>
+    </div>
+
+    <header class="bg-ic-dark/80 backdrop-blur-md p-4 sticky top-0 z-50 border-b border-white/5">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-ic-violet p-2 rounded-xl">
+                    <span class="text-white font-bold text-2xl">IC</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-white">Indramayu<span class="text-ic-violet">CLUB</span></h1>
+                    <p class="text-[9px] text-slate-500 uppercase tracking-widest">Piramida Guard v2.0</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-ic-card sticky top-[77px] z-40 border-b border-white/5">
+        <div class="max-w-md mx-auto flex justify-around p-1.5 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+            <button onclick="pindahDimensi('core')" id="nav-core" class="nav-active flex-1 py-2.5 rounded-lg border border-transparent">Core</button>
+            <button onclick="pindahDimensi('folders')" id="nav-folders" class="flex-1 py-2.5 rounded-lg border border-transparent">Folders</button>
+            <button onclick="pindahDimensi('guard')" id="nav-guard" class="flex-1 py-2.5 rounded-lg border border-transparent">Guard</button>
+            <button onclick="pindahDimensi('bank')" id="nav-bank" class="flex-1 py-2.5 rounded-lg border border-transparent">Bank</button>
+            <button onclick="pindahDimensi('nexus')" id="nav-nexus" class="flex-1 py-2.5 rounded-lg border border-transparent">Nexus</button>
+        </div>
+    </nav>
+
+    <main class="max-w-md mx-auto p-4 pt-6 pb-28 space-y-6">
+
+        <section id="dimensi-core" class="dimensi-content space-y-6">
+            <div class="bg-red-950/30 border border-red-500/30 p-4 rounded-2xl flex items-center gap-4">
+                <span class="text-3xl">⚠️</span>
+                <div>
+                    <h4 class="text-xs font-bold text-red-300 uppercase">Sistem Peringatan</h4>
+                    <p class="text-[11px] text-red-200">Backup Nur 8 aktif otomatis setiap adzan.</p>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-ic-card p-4 rounded-3xl border border-white/5 shadow-xl text-center">
+                    <img src="https://lh3.googleusercontent.com/d/11sB_wn0MWhliJiqOTTkhI0JsKVcir5LK" class="img-profile-nur" alt="Nur 7">
+                    <h3 class="text-xs font-bold text-white uppercase mb-3 tracking-widest">Nur 7 - Komunikasi</h3>
+                    <div class="ai-frame-container">
+                        <iframe src="https://ai.studio/apps/61b74539-37e7-414a-b134-c2fe33764cd8" class="w-full h-full border-none"></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-ic-card p-4 rounded-3xl border border-white/5 shadow-xl text-center">
+                    <img src="https://lh3.googleusercontent.com/d/1kzprF9Kf4wE53_WQQh-EO4fKc3ecXOhg" class="img-profile-nur" alt="Nur 8">
+                    <h3 class="text-xs font-bold text-white uppercase mb-3 tracking-widest">Nur 8 - Backup System</h3>
+                    <div class="ai-frame-container">
+                        <iframe src="https://ai.studio/apps/03003f47-194f-4511-8c65-2e17c2c0f465" class="w-full h-full border-none"></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-ic-card p-4 rounded-3xl border border-white/5 shadow-xl text-center">
+                    <img src="https://lh3.googleusercontent.com/d/1zpLU2l0oAiINxDysy3mHt3IGtTRYGrNO" class="img-profile-nur" alt="Nur 9">
+                    <h3 class="text-xs font-bold text-white uppercase mb-3 tracking-widest">Nur 9 - Pembimbing Kas</h3>
+                    <div class="ai-frame-container">
+                        <iframe src="https://ai.studio/apps/61b74539-37e7-414a-b134-c2fe33764cd8" class="w-full h-full border-none"></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-ic-card p-4 rounded-3xl border border-white/5 shadow-xl text-center">
+                    <img src="https://lh3.googleusercontent.com/d/1-JMJIMIFxP8HCJk2yyNEHZi6oDDEyQhj" class="img-profile-nur" alt="Nur 10">
+                    <h3 class="text-xs font-bold text-white uppercase mb-3 tracking-widest">Nur 10 - Admin Bank</h3>
+                    <div class="ai-frame-container">
+                        <iframe src="https://ai.studio/apps/fea67ee7-2e48-4dc7-9926-d9646b184ee9" class="w-full h-full border-none"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dimensi-folders" class="dimensi-content hidden space-y-4">
+            <h2 class="text-sm font-black text-white uppercase tracking-widest">ARSIP NUR MAKRIFAT</h2>
+            <div class="grid grid-cols-2 gap-3 text-xs font-mono font-medium">
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-2">📂 Folder_A</div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-2">📂 Folder_B</div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-2">📂 Folder_C</div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-2">📂 Folder_D</div>
+                <div class="bg-ic-card/60 p-3 rounded-xl border border-ic-violet/30 text-ic-violet">🔒 Folder_H</div>
+                <div class="bg-ic-card p-3 rounded-xl border border-white/5 flex items-center gap-2">📂 Folder_K</div>
+            </div>
+        </section>
+
+        <section id="dimensi-guard" class="dimensi-content hidden space-y-5">
+            <div class="bg-ic-card p-6 rounded-3xl border border-violet-900/50 text-center">
+                <h3 class="font-bold text-xl text-white mb-6">PIRAMIDA GUARD</h3>
+                <div class="space-y-3">
+                    <button onclick="syncPiramida()" class="w-full bg-ic-violet text-white p-4 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg">🔄 Sinkronkan Seluruh Folder</button>
+                    <button onclick="resetSistem()" class="w-full bg-slate-800 text-red-400 p-4 rounded-xl font-bold text-xs uppercase border border-red-500/20">🛡️ Emergency Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="dimensi-bank" class="dimensi-content hidden space-y-5">
+            <div class="bg-ic-card p-5 rounded-2xl border border-green-900/30">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-[10px] text-green-400 font-bold uppercase tracking-widest">Status Kas Nur 6</span>
+                    <span class="text-[9px] text-green-300 bg-green-950 px-2 py-0.5 rounded-full border border-green-800">● ONLINE</span>
+                </div>
+                <div class="text-3xl font-bold text-white">Potongan 5%</div>
+                <p class="text-xs text-slate-400 mt-1">Status: Aktif & Sinkron</p>
+            </div>
+        </section>
+
+        <section id="dimensi-nexus" class="dimensi-content hidden">
+            <div class="text-center py-12 bg-ic-card rounded-3xl border border-white/5">
+                <div class="text-5xl mb-4">🧘</div>
+                <h2 class="font-bold text-2xl text-white">NEXUS MAKRIFAT</h2>
+                <p class="text-xs text-slate-400 mt-3 px-6">Gerbang penghubung aplikasi eksternal melalui jalur Nur Satria 01.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="fixed bottom-0 left-0 w-full p-4 bg-ic-dark/90 backdrop-blur-lg border-t border-white/5 z-50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+                <span class="text-[9px] font-bold text-green-300 uppercase tracking-widest">Sistem: Aktif (Folder A-K)</span>
+            </div>
+            <span class="text-[9px] font-mono text-slate-500">IP: 182.4.37.50</span>
+        </div>
+    </footer>
+
+    <script>
+        function pindahDimensi(id) {
+            document.querySelectorAll('.dimensi-content').forEach(s => s.classList.add('hidden'));
+            document.getElementById('dimensi-' + id).classList.remove('hidden');
+            
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('nav-active'));
+            document.getElementById('nav-' + id).classList.add('nav-active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function bukaTirai() {
+            const curtain = document.getElementById('curtain-container');
+            curtain.classList.add('curtain-open');
+            setTimeout(() => { curtain.style.display = 'none'; }, 800);
+        }
+
+        function syncPiramida() { alert("Piramida Guard: Menjalankan sinkronisasi git..."); }
+        function resetSistem() { if(confirm("Reset Sistem?")) alert("Sistem Redup... Nur 8 Backup dimulai."); }
+    </script>
+</body>
+</html>
